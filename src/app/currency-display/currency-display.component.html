@@ -1,0 +1,35 @@
+<div class = "display-control">
+  <mat-form-field>
+    <mat-label>Select Cryptocurrencies</mat-label>
+    <mat-select (selectionChange) = "setSelected($event.value)" multiple>
+      <mat-select-filter [array]="coins" [displayMember]="'symbol'" (filteredReturn)="filtered = $event"></mat-select-filter>
+      <mat-option *ngFor="let coin of filtered" [value] = "coin.symbol">
+        {{coin.symbol}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-button-toggle-group [value] = "view" (change) = "setView($event.value)">
+    <mat-button-toggle value="table">Table</mat-button-toggle>
+    <mat-button-toggle value="graph">Graph</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div class = "display">
+  <div *ngIf = "selected.length">
+    <div *ngIf = "view == 'table'">
+      <app-currency-table [selected] = "selected"></app-currency-table>
+    </div>
+
+    <div *ngIf = "view == 'graph'">
+      <app-currency-graph [selected] = "selected"></app-currency-graph>
+    </div>
+  </div>
+
+  <div *ngIf = "!selected.length">
+    <p></p>
+    <h3>
+      No cryptocurrencies selected for display
+    </h3>
+  </div>
+</div>
+

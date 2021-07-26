@@ -1,0 +1,17 @@
+<div>
+  <mat-button-toggle-group [value] = "view" (change) = "setView($event.value)">
+    <mat-button-toggle value="day">24H</mat-button-toggle>
+    <mat-button-toggle value="month">30D</mat-button-toggle>
+    <mat-button-toggle value="year">1Y</mat-button-toggle>
+  </mat-button-toggle-group>
+  <div class = "chartLayout">
+    <div class = "chart" *ngFor = "let l of labels; let i = index">
+      <canvas baseChart
+        [datasets]="data[i]"
+        [labels]="labels[i]"
+        [chartType] = "'line'"
+        [options] = "options">
+      </canvas>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpErrorResponse } from "@angular/common/http"
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
-import { ResponseObject, Coin, CoinMetrics } from "./interfaces";
+import { ResponseObject, Coin, TableMetrics, GraphMetrics } from "./interfaces";
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +25,38 @@ export class CurrencyService {
       );
   }
 
-  getCoinMetrics(symbols: string[]): Observable<CoinMetrics[]>{
+  getTableMetrics(symbols: string[]): Observable<TableMetrics[]>{
     let api = `${this.endpoint}data=assets&key=${this.key}&symbol=${symbols.join(",")}`;
+
+    return this.http.get<ResponseObject>(api)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  getDayGraphMetrics(symbols: string[]): Observable<GraphMetrics[]>{
+    let api = `${this.endpoint}data=assets&key=${this.key}&symbol=${symbols.join(",")}`;
+
+    return this.http.get<ResponseObject>(api)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  getWeekGraphMetrics(symbols: string[]): Observable<GraphMetrics[]>{
+    let api = `${this.endpoint}data=assets&key=${this.key}&symbol=${symbols.join(",")}&data_points=7&interval=day`;
+
+    return this.http.get<ResponseObject>(api)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  getMonthGraphMetrics(symbols: string[]): Observable<GraphMetrics[]>{
+    let api = `${this.endpoint}data=assets&key=${this.key}&symbol=${symbols.join(",")}&data_points=30&interval=day`;
 
     return this.http.get<ResponseObject>(api)
       .pipe(
